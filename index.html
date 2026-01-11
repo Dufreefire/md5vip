@@ -3,120 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ALEX GLOBAL NO-API</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>ALEX ULTRA SYSTEM - FULL CPANEL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { background: #020617; color: #fff; font-family: 'Orbitron', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .neon-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 2rem; }
-        .input-style { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid #1e293b !important; color: #22d3ee !important; }
+        body { background: #020617; color: #fff; font-family: 'Orbitron', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; p: 1rem; overflow-x: hidden; }
+        .neon-card { background: rgba(15, 23, 42, 0.95); border: 1px solid #06b6d433; border-radius: 2rem; box-shadow: 0 0 50px rgba(6, 182, 212, 0.1); }
+        .input-dark { background: #000 !important; border: 1px solid #1e293b !important; color: #22d3ee !important; outline: none; transition: 0.3s; }
+        .input-dark:focus { border-color: #06b6d4 !important; box-shadow: 0 0 10px rgba(6, 182, 212, 0.3); }
         .hidden { display: none !important; }
-        .result-tai { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
-        .result-xiu { color: #ff0055; text-shadow: 0 0 20px #ff0055; }
+        .btn-cyan { background: linear-gradient(90deg, #0891b2, #1e40af); transition: 0.3s; }
+        .btn-cyan:active { scale: 0.95; }
+        .tai-neon { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
+        .xiu-neon { color: #ff0055; text-shadow: 0 0 20px #ff0055; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-    <div class="neon-box w-full max-w-[400px] p-8">
-        <div id="auth-section" class="space-y-6">
-            <h1 class="text-3xl font-black text-center text-cyan-500 italic">ALEX OFFLINE</h1>
+    <div id="main-container" class="w-full max-w-[450px]">
+        
+        <div id="auth-section" class="neon-card p-8 space-y-6">
+            <div class="text-center">
+                <h1 class="text-3xl font-black text-cyan-500 italic tracking-tighter">ALEX GLOBAL</h1>
+                <p class="text-[10px] text-slate-500 tracking-[0.3em] mt-1">MANAGEMENT SYSTEM V4</p>
+            </div>
+
             <div class="space-y-3">
-                <input id="user-field" type="text" placeholder="Tên đăng nhập" class="w-full p-4 rounded-xl input-style text-sm">
-                <input id="pass-field" type="password" placeholder="Mật khẩu" class="w-full p-4 rounded-xl input-style text-sm">
+                <input id="auth-user" type="text" placeholder="Tên đăng nhập" class="w-full p-4 rounded-xl input-dark text-sm font-bold">
+                <input id="auth-pass" type="password" placeholder="Mật khẩu" class="w-full p-4 rounded-xl input-dark text-sm font-bold">
+                
+                <div id="reg-fields" class="hidden space-y-3">
+                    <input id="auth-email" type="email" placeholder="Địa chỉ Gmail" class="w-full p-4 rounded-xl input-dark text-sm">
+                    <input id="auth-phone" type="tel" placeholder="Số điện thoại" class="w-full p-4 rounded-xl input-dark text-sm">
+                </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="handleAuth('login')" class="py-4 bg-cyan-600 rounded-xl font-bold text-sm">ĐĂNG NHẬP</button>
-                <button onclick="handleAuth('register')" class="py-4 bg-slate-800 rounded-xl font-bold text-sm border border-slate-700">ĐĂNG KÝ</button>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="handleAuth('login')" id="btn-login" class="py-4 btn-cyan rounded-xl font-bold">ĐĂNG NHẬP</button>
+                <button onclick="toggleAuthMode()" id="btn-toggle" class="text-[10px] text-slate-500 underline text-center">Chưa có tài khoản? Đăng ký ngay</button>
+                <button onclick="handleAuth('register')" id="btn-reg" class="py-4 bg-slate-800 rounded-xl font-bold hidden border border-slate-700">XÁC NHẬN ĐĂNG KÝ</button>
             </div>
-            <p id="msg" class="text-center text-[10px] text-pink-500"></p>
+            <p id="auth-msg" class="text-center text-[10px] text-pink-500 h-2"></p>
         </div>
 
-        <div id="tool-section" class="hidden space-y-6">
-            <div class="flex justify-between items-center border-b border-cyan-900 pb-2">
-                <span class="text-green-400 text-[10px] font-bold">● LOCAL STORAGE MODE</span>
-                <span id="user-info" class="text-[10px] text-slate-400"></span>
+        <div id="dash-section" class="hidden neon-card p-6 space-y-6">
+            <div class="flex justify-between items-center border-b border-cyan-900 pb-3">
+                <div>
+                    <p id="display-user" class="text-cyan-400 font-bold text-sm uppercase"></p>
+                    <p class="text-[10px] text-slate-500">Số dư: <span id="display-balance" class="text-green-400">0đ</span></p>
+                </div>
+                <button onclick="logout()" class="text-[9px] bg-red-900/30 px-3 py-1 rounded-lg text-red-400 border border-red-900/50">ĐĂNG XUẤT</button>
             </div>
-            <textarea id="md5-input" placeholder="DÁN MD5 PHIÊN..." class="w-full p-4 h-32 rounded-2xl input-style text-xs uppercase resize-none outline-none"></textarea>
-            <button onclick="runTool()" id="btn-ana" class="w-full py-5 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-2xl font-black italic">PHÂN TÍCH GLOBAL</button>
-            <div id="result-display" class="hidden text-center p-6 bg-black/40 rounded-3xl border border-white/5">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 bg-black/40 rounded-2xl border border-white/5 text-center space-y-2">
+                    <p class="text-[9px] text-slate-500 uppercase tracking-widest">Gói 1 Ngày</p>
+                    <p class="text-xl font-bold text-cyan-400">50K</p>
+                    <button onclick="buyKey(50000, 1)" class="w-full py-2 bg-cyan-600/20 text-cyan-400 rounded-lg text-[10px] font-bold border border-cyan-600/30">MUA KEY</button>
+                </div>
+                <div class="p-4 bg-black/40 rounded-2xl border border-white/5 text-center space-y-2">
+                    <p class="text-[9px] text-slate-500 uppercase tracking-widest">Gói 7 Ngày</p>
+                    <p class="text-xl font-bold text-cyan-400">250K</p>
+                    <button onclick="buyKey(250000, 7)" class="w-full py-2 bg-cyan-600/20 text-cyan-400 rounded-lg text-[10px] font-bold border border-cyan-600/30">MUA KEY</button>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Kích hoạt Tool</p>
+                <input id="key-input" type="text" placeholder="DÁN MÃ KEY VÀO ĐÂY" class="w-full p-4 rounded-xl input-dark text-xs text-center font-black tracking-[0.2em]">
+                <button onclick="activateLicense()" class="w-full py-4 btn-cyan rounded-xl font-bold text-sm">KÍCH HOẠT NGAY</button>
+            </div>
+
+            <div class="p-4 bg-yellow-900/10 rounded-xl border border-yellow-500/10 text-center">
+                <p class="text-[9px] text-yellow-500">Nạp tiền vui lòng liên hệ Admin qua Telegram</p>
+                <button onclick="fakeDeposit()" class="mt-2 text-[8px] text-slate-600 italic underline">Nhấn để test nạp 500k (Dành cho Dev)</button>
+            </div>
+        </div>
+
+        <div id="tool-section" class="hidden neon-card p-6 space-y-6">
+            <div class="flex justify-between items-center text-[10px] border-b border-cyan-900 pb-2">
+                <span class="text-green-400 font-bold animate-pulse">● LICENSE: ACTIVE</span>
+                <span id="display-expire" class="text-slate-500">Hạn: ...</span>
+            </div>
+            
+            <textarea id="md5-input" placeholder="DÁN MÃ MD5 PHIÊN CẦN PHÂN TÍCH..." class="w-full p-4 h-32 rounded-2xl input-dark text-[11px] leading-relaxed uppercase resize-none"></textarea>
+            
+            <button onclick="runAnalysis()" id="btn-ana" class="w-full py-5 btn-cyan rounded-2xl font-black italic text-lg tracking-widest">PHÂN TÍCH GLOBAL</button>
+            
+            <div id="res-display" class="hidden bg-black/60 rounded-3xl p-8 text-center border border-white/5 shadow-inner">
+                <p class="text-[8px] text-slate-500 mb-2 tracking-[0.5em]">DỰ ĐOÁN KẾT QUẢ</p>
                 <h2 id="final-res" class="text-7xl font-black italic">...</h2>
             </div>
+            <button onclick="backToDash()" class="w-full text-[10px] text-slate-600 underline">Quay lại Dashboard</button>
         </div>
+
+        <div id="admin-section" class="hidden neon-card p-6 space-y-6 border-red-900/50 border-2">
+            <div class="flex justify-between items-center border-b border-red-900 pb-3">
+                <h2 class="text-xl font-black text-red-500 italic">ADMIN CPANEL</h2>
+                <button onclick="logout()" class="text-[10px] bg-slate-800 px-3 py-1 rounded-lg">THOÁT</button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-black/50 p-2 rounded-xl border border-white/5">
+                    <p class="text-[8px] text-slate-500">THÀNH VIÊN</p>
+                    <p id="adm-total-user" class="text-cyan-400 font-bold">0</p>
+                </div>
+                <div class="bg-black/50 p-2 rounded-xl border border-white/5">
+                    <p class="text-[8px] text-slate-500">KEY TỒN</p>
+                    <p id="adm-total-key" class="text-green-400 font-bold">0</p>
+                </div>
+                <div class="bg-black/50 p-2 rounded-xl border border-white/5">
+                    <p class="text-[8px] text-slate-500">TIỀN HỆ THỐNG</p>
+                    <p id="adm-total-money" class="text-yellow-400 font-bold text-[8px]">0đ</p>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-[10px] font-bold text-slate-400">QUẢN LÝ NGƯỜI DÙNG</p>
+                <div id="adm-user-list" class="max-h-[250px] overflow-y-auto space-y-2 pr-1">
+                    </div>
+            </div>
+
+            <div class="p-4 bg-red-900/10 rounded-2xl border border-red-500/20 space-y-3">
+                <p class="text-[10px] text-red-400 font-bold">NẠP TIỀN NHANH</p>
+                <input id="adm-target-user" type="text" placeholder="Tên User" class="w-full p-2 rounded-lg input-dark text-xs">
+                <input id="adm-target-amount" type="number" placeholder="Số tiền nạp (VND)" class="w-full p-2 rounded-lg input-dark text-xs">
+                <button onclick="adminDeposit()" class="w-full py-2 bg-red-600 rounded-lg text-xs font-bold">XÁC NHẬN NẠP TIỀN</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // GIẢ LẬP DATABASE JSON TRONG TRÌNH DUYỆT
-        const DB_KEY = "ALEX_USER_DATA";
+        // ================= CẤU HÌNH HỆ THỐNG =================
+        const ADMIN_PASS = "ALEX_ADMIN_2026"; // Mật khẩu vào Admin CP
+        const DB_KEY = "ALEX_ULTRA_DATA_JSON";
+        let currentUser = null;
 
+        // --- QUẢN LÝ DỮ LIỆU JSON (LOCALSTORAGE) ---
         function getDB() {
             const data = localStorage.getItem(DB_KEY);
-            return data ? JSON.parse(data) : [];
+            return data ? JSON.parse(data) : { users: [], keys: [], logs: [] };
         }
-
         function saveDB(db) {
             localStorage.setItem(DB_KEY, JSON.stringify(db));
         }
 
-        // XỬ LÝ ĐĂNG KÝ / ĐĂNG NHẬP (KHÔNG CẦN API)
+        // --- XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ ---
+        function toggleAuthMode() {
+            const isReg = document.getElementById('reg-fields').classList.toggle('hidden');
+            document.getElementById('btn-login').classList.toggle('hidden');
+            document.getElementById('btn-reg').classList.toggle('hidden');
+            document.getElementById('btn-toggle').innerText = isReg ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký ngay";
+        }
+
         function handleAuth(mode) {
-            const user = document.getElementById('user-field').value.trim();
-            const pass = document.getElementById('pass-field').value.trim();
-            const msg = document.getElementById('msg');
+            const u = document.getElementById('auth-user').value.trim();
+            const p = document.getElementById('auth-pass').value.trim();
+            const msg = document.getElementById('auth-msg');
             let db = getDB();
 
-            if (!user || !pass) return alert("Nhập đủ tài khoản/mật khẩu!");
+            if(!u || !p) return alert("Nhập đủ tài khoản/mật khẩu!");
 
-            if (mode === 'register') {
-                const exist = db.find(u => u.username === user);
-                if (exist) return msg.innerText = "Tài khoản đã tồn tại!";
+            // Kiểm tra Admin
+            if(u.toLowerCase() === 'admin' && p === ADMIN_PASS) {
+                return showAdmin();
+            }
+
+            if(mode === 'register') {
+                const email = document.getElementById('auth-email').value;
+                const phone = document.getElementById('auth-phone').value;
+                if(db.users.find(x => x.u === u)) return msg.innerText = "Tài khoản này đã tồn tại!";
                 
-                db.push({ username: user, password: pass });
+                db.users.push({ u, p, email, phone, balance: 0, expire: null });
                 saveDB(db);
-                msg.innerText = "Đăng ký thành công! Hãy Đăng nhập.";
-                msg.className = "text-center text-[10px] text-green-400";
+                alert("Đăng ký thành công! Hãy Đăng nhập.");
+                toggleAuthMode();
             } else {
-                const valid = db.find(u => u.username === user && u.password === pass);
-                if (valid) {
-                    showTool(user);
+                const user = db.users.find(x => x.u === u && x.p === p);
+                if(user) {
+                    currentUser = user;
+                    showDashboard();
                 } else {
-                    msg.innerText = "Sai tài khoản hoặc mật khẩu!";
+                    msg.innerText = "Sai thông tin đăng nhập!";
                 }
             }
         }
 
-        function showTool(username) {
+        // --- GIAO DIỆN DASHBOARD ---
+        function showDashboard() {
             document.getElementById('auth-section').classList.add('hidden');
-            document.getElementById('tool-section').classList.remove('hidden');
-            document.getElementById('user-info').innerText = "USER: " + username.toUpperCase();
+            document.getElementById('dash-section').classList.remove('hidden');
+            updateDashboardUI();
         }
 
-        // THUẬT TOÁN GLOBAL (Gộp các tool)
-        function runTool() {
+        function updateDashboardUI() {
+            document.getElementById('display-user').innerText = currentUser.u;
+            document.getElementById('display-balance').innerText = currentUser.balance.toLocaleString() + "đ";
+        }
+
+        function buyKey(price, days) {
+            let db = getDB();
+            const uIdx = db.users.findIndex(x => x.u === currentUser.u);
+            
+            if(db.users[uIdx].balance < price) return alert("Bạn không đủ tiền! Hãy liên hệ Admin để nạp.");
+
+            db.users[uIdx].balance -= price;
+            const newKey = "ALEX-" + Math.random().toString(36).substring(2, 9).toUpperCase();
+            db.keys.push({ key: newKey, days: days, used: false });
+            
+            currentUser = db.users[uIdx];
+            saveDB(db);
+            updateDashboardUI();
+            alert("MUA THÀNH CÔNG!\nKey của bạn là: " + newKey + "\n(Hãy sao chép và dán vào ô kích hoạt bên dưới)");
+        }
+
+        function activateLicense() {
+            const keyVal = document.getElementById('key-input').value.trim().toUpperCase();
+            let db = getDB();
+            const kIdx = db.keys.findIndex(x => x.key === keyVal && !x.used);
+
+            if(kIdx === -1) return alert("Key không đúng hoặc đã được sử dụng!");
+
+            const uIdx = db.users.findIndex(x => x.u === currentUser.u);
+            const daysToAdd = db.keys[kIdx].days;
+            const now = Date.now();
+            
+            let currentExpire = db.users[uIdx].expire || now;
+            if (currentExpire < now) currentExpire = now;
+
+            db.users[uIdx].expire = currentExpire + (daysToAdd * 86400000);
+            db.keys[kIdx].used = true;
+            
+            currentUser = db.users[uIdx];
+            saveDB(db);
+            alert("KÍCH HOẠT THÀNH CÔNG! Chúc bạn may mắn.");
+            showTool();
+        }
+
+        // --- GIAO DIỆN TOOL ---
+        function showTool() {
+            if(!currentUser.expire || currentUser.expire < Date.now()) return alert("Bạn chưa có hạn sử dụng!");
+            document.getElementById('dash-section').classList.add('hidden');
+            document.getElementById('tool-section').classList.remove('hidden');
+            document.getElementById('display-expire').innerText = "Hạn: " + new Date(currentUser.expire).toLocaleDateString();
+        }
+
+        function runAnalysis() {
             const input = document.getElementById('md5-input').value.trim();
-            if (input.length < 5) return;
+            if(input.length < 5) return alert("Mã MD5 không hợp lệ!");
 
             const btn = document.getElementById('btn-ana');
-            btn.innerText = "ĐANG TÍNH TOÁN...";
-            
-            setTimeout(() => {
-                // Thuật toán hỗn hợp: XOR + ASCII Weight + Length Check
-                let val = 0;
-                for(let i=0; i<input.length; i++) {
-                    val += input.charCodeAt(i) * (i + 1);
-                }
-                const isTai = (val + input.length) % 2 === 0;
+            btn.innerText = "ANALYZING...";
+            btn.disabled = true;
 
-                const resBox = document.getElementById('result-display');
-                const resText = document.getElementById('final-res');
-                
-                resBox.classList.remove('hidden');
-                resText.innerText = isTai ? "TÀI" : "XỈU";
-                resText.className = "text-7xl font-black italic " + (isTai ? "result-tai" : "result-xiu");
+            setTimeout(() => {
+                // Thuật toán Global Hybrid
+                let score = 0;
+                for(let i=0; i<input.length; i++) score += input.charCodeAt(i) * (i+1);
+                const isTai = score % 2 === 0;
+
+                const display = document.getElementById('res-display');
+                const text = document.getElementById('final-res');
+                display.classList.remove('hidden');
+                text.innerText = isTai ? "TÀI" : "XỈU";
+                text.className = "text-7xl font-black italic " + (isTai ? "tai-neon" : "xiu-neon");
                 
                 btn.innerText = "PHÂN TÍCH GLOBAL";
-                if(window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+                btn.disabled = false;
             }, 1000);
+        }
+
+        // --- QUẢN LÝ ADMIN ---
+        function showAdmin() {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('admin-section').classList.remove('hidden');
+            refreshAdminUI();
+        }
+
+        function refreshAdminUI() {
+            const db = getDB();
+            document.getElementById('adm-total-user').innerText = db.users.length;
+            document.getElementById('adm-total-key').innerText = db.keys.filter(k => !k.used).length;
+            
+            let totalMoney = 0;
+            db.users.forEach(u => totalMoney += u.balance);
+            document.getElementById('adm-total-money').innerText = totalMoney.toLocaleString() + "đ";
+
+            const list = document.getElementById('adm-user-list');
+            list.innerHTML = "";
+            db.users.forEach(user => {
+                const div = document.createElement('div');
+                div.className = "bg-black/50 p-3 rounded-xl border border-white/5 flex justify-between items-center text-[10px]";
+                div.innerHTML = `
+                    <div>
+                        <p class="text-cyan-400 font-bold">${user.u}</p>
+                        <p class="text-slate-500">${user.phone || 'No Phone'}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-green-500 font-bold">${user.balance.toLocaleString()}đ</p>
+                        <button onclick="adminDeleteUser('${user.u}')" class="text-red-500 underline">Xóa</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function adminDeposit() {
+            const target = document.getElementById('adm-target-user').value.trim();
+            const amount = parseInt(document.getElementById('adm-target-amount').value);
+            let db = getDB();
+
+            const idx = db.users.findIndex(x => x.u === target);
+            if(idx === -1) return alert("Không tìm thấy người dùng!");
+            if(isNaN(amount)) return alert("Số tiền sai!");
+
+            db.users[idx].balance += amount;
+            saveDB(db);
+            alert(`Đã nạp ${amount}đ cho ${target}`);
+            refreshAdminUI();
+        }
+
+        function adminDeleteUser(name) {
+            if(!confirm("Xóa " + name + "?")) return;
+            let db = getDB();
+            db.users = db.users.filter(x => x.u !== name);
+            saveDB(db);
+            refreshAdminUI();
+        }
+
+        // --- TIỆN ÍCH ---
+        function backToDash() {
+            document.getElementById('tool-section').classList.add('hidden');
+            document.getElementById('dash-section').classList.remove('hidden');
+        }
+        function logout() { location.reload(); }
+        function fakeDeposit() { 
+            let db = getDB();
+            const idx = db.users.findIndex(x => x.u === currentUser.u);
+            db.users[idx].balance += 500000;
+            currentUser = db.users[idx];
+            saveDB(db);
+            updateDashboardUI();
+            alert("Dev Mode: Đã nạp 500K!");
         }
     </script>
 </body>
