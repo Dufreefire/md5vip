@@ -3,65 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ALEX V12.1 - TITAN STABLE</title>
+    <title>ALEX V12.2 - CPANEL ADMIN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        
-        /* CSS CHỐNG COPY */
         * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none !important; }
-        
         body { background: #000; color: #fff; font-family: 'Orbitron', sans-serif; min-height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         #laser-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        
-        .neon-box { 
-            background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(20px); border-radius: 2rem; box-shadow: 0 0 40px rgba(0,0,0,1);
-            animation: borderGlow 8s linear infinite;
-        }
-        @keyframes borderGlow { 0%, 100% { border-color: #ff0055; } 33% { border-color: #00f2ff; } 66% { border-color: #7000ff; } }
-        
-        .input-cyber { background: rgba(15,15,15,0.9) !important; border: 1px solid #222 !important; color: #fff !important; text-transform: uppercase; }
-        .btn-rgb { 
-            background: linear-gradient(90deg, #ff0055, #7000ff, #00f2ff); 
-            background-size: 200% auto; animation: shine 3s linear infinite; 
-            color: #fff; font-weight: 900; text-transform: uppercase; 
-        }
+        .neon-box { background: rgba(0, 0, 0, 0.93); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 2rem; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .input-cyber { background: rgba(20,20,20,0.9) !important; border: 1px solid #333 !important; color: #fff !important; }
+        .btn-rgb { background: linear-gradient(90deg, #ff0055, #7000ff, #00f2ff); background-size: 200% auto; animation: shine 3s linear infinite; color: #fff; font-weight: 900; text-transform: uppercase; }
         @keyframes shine { to { background-position: 200% center; } }
-        
         .hidden { display: none !important; }
         .tai-text { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; font-size: 4rem; font-weight: 900; }
         .xiu-text { color: #ff0055; text-shadow: 0 0 20px #ff0055; font-size: 4rem; font-weight: 900; }
-        
-        .bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 10px; }
-        .bar-fill { height: 100%; width: 0%; background: #00f2ff; transition: 0.3s; }
+        .admin-table { font-family: sans-serif; font-size: 10px; width: 100%; color: #ccc; }
+        .admin-table th { color: #555; text-align: left; padding: 5px; border-bottom: 1px solid #222; }
+        .admin-table td { padding: 5px; border-bottom: 1px solid #111; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <canvas id="laser-canvas"></canvas>
 
-    <div id="app" class="w-full max-w-[400px] p-5 relative">
+    <div id="app" class="w-full max-w-[420px] p-5 relative">
         
         <div id="auth-box" class="neon-box p-10 space-y-6">
             <div class="text-center">
-                <h1 class="text-3xl font-black italic">ALEX <span class="text-red-600">V12.1</span></h1>
-                <p class="text-[8px] tracking-[0.5em] text-slate-500 uppercase">Titan Secure Node</p>
+                <h1 class="text-3xl font-black italic">ALEX <span class="text-red-600">V12.2</span></h1>
+                <p class="text-[8px] tracking-[0.5em] text-slate-500 uppercase">Titan Command Center</p>
             </div>
             <div class="space-y-3">
-                <input id="u" type="text" placeholder="Tên đăng nhập" class="w-full p-4 rounded-xl input-cyber text-xs font-bold">
-                <input id="p" type="password" placeholder="Mật khẩu" class="w-full p-4 rounded-xl input-cyber text-xs font-bold" style="text-transform: none;">
-                <div id="reg-ext" class="hidden">
-                    <input id="phone" type="tel" placeholder="Số điện thoại" class="w-full p-4 rounded-xl input-cyber text-xs mt-3">
-                </div>
+                <input id="u" type="text" placeholder="Username" class="w-full p-4 rounded-xl input-cyber text-xs font-bold uppercase">
+                <input id="p" type="password" placeholder="Password" class="w-full p-4 rounded-xl input-cyber text-xs font-bold">
             </div>
-            
-            <button onclick="auth('login')" id="l-btn" class="w-full py-4 btn-rgb rounded-xl text-xs">Đăng Nhập Hệ Thống</button>
-            <button onclick="auth('reg')" id="r-btn" class="hidden w-full py-4 btn-rgb rounded-xl text-xs">Xác Nhận Đăng Ký</button>
-            
+            <button onclick="auth('login')" id="l-btn" class="w-full py-4 btn-rgb rounded-xl text-xs">Login Server</button>
+            <button onclick="auth('reg')" id="r-btn" class="hidden w-full py-4 btn-rgb rounded-xl text-xs">Create Member</button>
             <div class="flex justify-between px-1">
-                <button onclick="toggleReg()" id="t-btn" class="text-[9px] text-slate-600 uppercase">Tạo tài khoản mới</button>
-                <button onclick="admIn()" class="text-[9px] text-red-900 font-bold uppercase">Admin</button>
+                <button onclick="toggleReg()" id="t-btn" class="text-[9px] text-slate-600 uppercase">Register</button>
+                <button onclick="openAdmin()" class="text-[9px] text-red-900 font-bold uppercase">System Admin</button>
             </div>
         </div>
 
@@ -71,245 +51,149 @@
                     <h2 id="u-name" class="font-black text-white uppercase text-sm">...</h2>
                     <p id="u-bal" class="text-xs text-green-500 font-bold">0đ</p>
                 </div>
-                <button onclick="showNap()" class="bg-cyan-500/10 px-4 py-2 rounded-lg border border-cyan-500/30 text-[10px] text-cyan-400 font-bold">NẠP TIỀN</button>
+                <button onclick="showNap()" class="bg-cyan-500/20 px-4 py-2 rounded-lg text-cyan-400 text-[10px] font-bold">NẠP TIỀN</button>
             </div>
-
             <div class="grid grid-cols-2 gap-2">
-                <div onclick="buy(25000, 1)" class="neon-box p-4 text-center cursor-pointer border-none hover:bg-white/5">
-                    <p class="text-[7px] text-slate-500 uppercase">Key 1 Ngày</p>
-                    <p class="text-sm font-bold text-cyan-400">25,000đ</p>
-                </div>
-                <div onclick="buy(55000, 3)" class="neon-box p-4 text-center cursor-pointer border-none hover:bg-white/5">
-                    <p class="text-[7px] text-slate-500 uppercase">Key 3 Ngày</p>
-                    <p class="text-sm font-bold text-cyan-400">55,000đ</p>
-                </div>
-                <div onclick="buy(120000, 7)" class="neon-box p-4 text-center cursor-pointer border-none hover:bg-white/5">
-                    <p class="text-[7px] text-slate-500 uppercase">Key 7 Ngày</p>
-                    <p class="text-sm font-bold text-cyan-400">120,000đ</p>
-                </div>
-                <div onclick="buy(150000, 30)" class="neon-box p-4 text-center cursor-pointer border-none hover:bg-white/5">
-                    <p class="text-[7px] text-slate-500 uppercase">Key 30 Ngày</p>
-                    <p class="text-sm font-bold text-cyan-400">150,000đ</p>
-                </div>
+                <div onclick="buy(25000, 1)" class="neon-box p-4 text-center cursor-pointer border-none">1 Ngày / 25k</div>
+                <div onclick="buy(150000, 30)" class="neon-box p-4 text-center cursor-pointer border-none">30 Ngày / 150k</div>
+            </div>
+            <div class="neon-box p-6 space-y-3">
+                <input id="k-in" type="text" placeholder="DÁN KEY VÀO ĐÂY" class="w-full p-4 rounded-xl input-cyber text-center text-xs">
+                <button onclick="act()" class="w-full py-4 btn-rgb rounded-xl text-xs">Kích Hoạt Ngay</button>
+            </div>
+        </div>
+
+        <div id="admin-box" class="hidden neon-box p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-red-500/30 pb-2">
+                <h2 class="text-red-500 font-black text-sm uppercase">Admin Cpanel</h2>
+                <button onclick="location.reload()" class="text-[8px] text-slate-500">THOÁT</button>
             </div>
 
-            <div class="neon-box p-6 space-y-3 text-center">
-                <input id="k-in" type="text" placeholder="DÁN KEY KÍCH HOẠT" class="w-full p-4 rounded-xl input-cyber text-center text-xs tracking-[0.2em]">
-                <button onclick="act()" class="w-full py-4 btn-rgb rounded-xl text-xs">Mở Khóa Tool</button>
-                <p id="hsd" class="text-[8px] text-slate-600 uppercase">Hạn dùng: Chưa có</p>
+            <div class="bg-red-500/5 p-4 rounded-xl border border-red-500/10 space-y-2">
+                <p class="text-[9px] text-red-400 font-bold uppercase">Cộng tiền User</p>
+                <input id="adm-target" type="text" placeholder="Tên User" class="w-full p-2 rounded bg-black border border-zinc-800 text-[10px]">
+                <input id="adm-cash" type="number" placeholder="Số tiền (VD: 100000)" class="w-full p-2 rounded bg-black border border-zinc-800 text-[10px]">
+                <button onclick="adminAddMoney()" class="w-full py-2 bg-red-600 text-[10px] font-bold rounded">XÁC NHẬN CỘNG TIỀN</button>
+            </div>
+
+            <div class="space-y-2">
+                <p class="text-[9px] text-slate-500 uppercase">Danh sách thành viên</p>
+                <div id="user-list" class="bg-zinc-950 rounded-lg p-2">
+                    </div>
             </div>
         </div>
 
         <div id="nap-box" class="hidden neon-box p-8 text-center space-y-4">
-             <div class="bg-white p-2 rounded-2xl inline-block shadow-2xl">
-                <img id="q-img" src="" class="w-48 h-48 mx-auto">
-             </div>
-             <div class="text-[10px] text-left space-y-2 bg-black/50 p-4 rounded-xl border border-white/5">
-                <p>Ngân hàng: <span class="text-white font-bold">VIETINBANK</span></p>
-                <p>Số tài khoản: <span id="b-s" class="text-cyan-400 font-bold"></span></p>
-                <div class="p-2 bg-red-900/10 border border-red-500/20 text-center rounded-lg">
-                    <p class="text-[7px] text-red-500 uppercase font-bold">Nội dung chuyển khoản:</p>
-                    <p id="b-c" class="text-xl font-black italic text-white"></p>
-                </div>
-             </div>
-             <input id="a-in" type="number" placeholder="Nhập số tiền đã nạp" class="w-full p-3 input-cyber rounded-xl text-center text-xs">
-             <button onclick="req()" id="rq-btn" class="w-full py-4 bg-green-600 rounded-xl text-[10px] font-bold uppercase">Gửi Yêu Cầu Duyệt</button>
-             <button onclick="closeNap()" class="text-[9px] text-slate-600 underline">Quay Lại</button>
-        </div>
-
-        <div id="tool-box" class="hidden neon-box p-6 space-y-4 text-center">
-            <div class="flex justify-between text-[8px] font-bold text-green-500 animate-pulse">
-                <span>● HYBRID NODE ACTIVE</span>
-                <span id="hsd-tool" class="text-slate-500"></span>
-            </div>
-            <textarea id="md-in" placeholder="DÁN MÃ PHIÊN MD5 TẠI ĐÂY..." class="w-full p-4 h-28 input-cyber rounded-2xl text-[10px] uppercase"></textarea>
-            <button onclick="hybridAnalyze()" id="an-btn" class="w-full py-4 btn-rgb rounded-xl text-xs">Phân Tích Dữ Liệu</button>
-            
-            <div id="loading-node" class="hidden">
-                <p class="text-[7px] text-slate-500 uppercase mb-1">Đang đồng bộ máy chủ VN - QT...</p>
-                <div class="bar-container"><div id="vn-bar" class="bar-fill"></div></div>
-            </div>
-
-            <div id="res-box" class="hidden bg-black/50 p-8 rounded-[2rem] border border-white/5">
-                <p id="final"></p>
-                <p id="acc" class="text-[8px] text-cyan-500 font-bold mt-4 uppercase">Độ chính xác: --%</p>
-            </div>
-            <button onclick="location.reload()" class="w-full text-[8px] text-slate-700 underline uppercase mt-4">Đăng xuất</button>
+             <img id="q-img" src="" class="mx-auto w-40">
+             <p id="b-c" class="text-xl font-bold text-red-500"></p>
+             <button onclick="closeNap()" class="text-[9px] text-slate-600 underline uppercase">Quay lại</button>
         </div>
     </div>
 
     <script>
-        // --- CHỐNG F12 & COPY ---
-        document.addEventListener('keydown', e => {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) e.preventDefault();
-        });
-        document.onkeydown = (e) => { if(e.ctrlKey && e.keyCode == 83) return false; };
-
-        // --- CẤU HÌNH ---
         const CFG = {
             BANK_ID: "VIETINBANK",
             BANK_STK: "103886058569",
-            BANK_NAME: "NGUYEN VAN DU",
-            BOT_TOKEN: "8519714140:AAHZeBX_iPbxgeTj480uj3nt-uy_itQjNBw",
-            ADMIN_ID: "8144161968",
-            ADMIN_PASS: "nguyendu2009@" // Đã đổi pass theo yêu cầu
+            ADMIN_PASS: "nguyendu2009@",
+            DB_NAME: "ALEX_DB_V12_2"
         };
-        const DB_NAME = "ALEX_TITAN_V12_1";
         let cur = null;
 
-        const getDB = () => JSON.parse(localStorage.getItem(DB_NAME)) || { users: [], keys: [] };
-        const setDB = (db) => localStorage.setItem(DB_NAME, JSON.stringify(db));
+        const getDB = () => JSON.parse(localStorage.getItem(CFG.DB_NAME)) || { users: [], keys: [] };
+        const setDB = (db) => localStorage.setItem(CFG.DB_NAME, JSON.stringify(db));
 
-        // --- NỀN LASER ---
+        // NỀN LASER (Giữ cũ cho đẹp)
         const canvas = document.getElementById('laser-canvas');
         const ctx = canvas.getContext('2d');
-        let lines = [];
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            lines = []; for(let i=0; i<15; i++) lines.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*2, vy: (Math.random()-0.5)*2, hue: Math.random()*360});
-        }
-        function draw() {
-            ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect(0,0,canvas.width,canvas.height);
-            lines.forEach(l => {
-                l.x+=l.vx; l.y+=l.vy; l.hue=(l.hue+1)%360;
-                if(l.x<0||l.x>canvas.width) l.vx*=-1; if(l.y<0||l.y>canvas.height) l.vy*=-1;
-                ctx.strokeStyle=`hsl(${l.hue},100%,50%)`; ctx.beginPath(); ctx.moveTo(l.x,l.y); ctx.lineTo(l.x-l.vx*30,l.y-l.vy*30); ctx.stroke();
-            });
-            requestAnimationFrame(draw);
-        }
-        init(); draw(); window.onresize = init;
+        function init(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+        window.onresize=init; init();
+        function draw(){ ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,canvas.width,canvas.height); requestAnimationFrame(draw); }
+        draw();
 
-        // --- LOGIC ---
-        function toggleReg() {
+        // LOGIC AUTH
+        function toggleReg(){
             const isReg = document.getElementById('reg-ext').classList.toggle('hidden');
             document.getElementById('l-btn').classList.toggle('hidden');
             document.getElementById('r-btn').classList.toggle('hidden');
-            document.getElementById('t-btn').innerText = isReg ? "Quay lại Đăng nhập" : "Tạo tài khoản mới";
+            document.getElementById('t-btn').innerText = isReg ? "Login" : "Register";
         }
 
-        function auth(mode) {
+        function auth(mode){
             const u = document.getElementById('u').value.trim().toUpperCase();
             const p = document.getElementById('p').value;
-            if(!u || !p) return alert("Vui lòng điền đủ thông tin!");
+            if(!u || !p) return;
             let db = getDB();
-
-            if(mode === 'reg') {
-                if(db.users.find(x => x.u === u)) return alert("Tài khoản đã tồn tại!");
-                const ref = "ALEX" + Math.floor(1000 + Math.random()*8999);
-                db.users.push({ u, p, bal: 0, exp: null, ref });
-                setDB(db); alert("Đăng ký thành công!"); toggleReg();
+            if(mode === 'reg'){
+                if(db.users.find(x=>x.u===u)) return alert("User tồn tại!");
+                db.users.push({ u, p, bal: 0, exp: null, ref: "ALEX"+Math.floor(1000+Math.random()*9000) });
+                setDB(db); alert("Đăng ký xong!"); toggleReg();
             } else {
-                const user = db.users.find(x => x.u === u && x.p === p);
-                if(user) { cur = user; showDash(); } else alert("Sai tài khoản hoặc mật khẩu!");
+                const user = db.users.find(x=>x.u===u && x.p===p);
+                if(user){ cur = user; showDash(); } else alert("Sai thông tin!");
             }
         }
 
-        function showDash() {
+        function showDash(){
             document.getElementById('auth-box').classList.add('hidden');
             document.getElementById('dash-box').classList.remove('hidden');
             document.getElementById('u-name').innerText = cur.u;
-            document.getElementById('u-bal').innerText = cur.bal.toLocaleString() + "đ";
-            if(cur.exp && cur.exp > Date.now()) {
-                document.getElementById('hsd').innerText = "HSD: " + new Date(cur.exp).toLocaleDateString();
-                showTool();
-            }
+            document.getElementById('u-bal').innerText = cur.bal.toLocaleString()+"đ";
         }
 
-        function showNap() {
+        // --- CPANEL ADMIN FUNCTIONS ---
+        function openAdmin(){
+            const pass = prompt("NHẬP MẬT KHẨU ADMIN:");
+            if(pass !== CFG.ADMIN_PASS) return alert("Sai mật khẩu!");
+            
+            document.getElementById('auth-box').classList.add('hidden');
+            document.getElementById('dash-box').classList.add('hidden');
+            document.getElementById('admin-box').classList.remove('hidden');
+            renderAdminUsers();
+        }
+
+        function renderAdminUsers(){
+            const db = getDB();
+            let html = `<table class="admin-table"><tr><th>USER</th><th>TIỀN</th><th>MÃ NẠP</th></tr>`;
+            db.users.forEach(user => {
+                html += `<tr><td>${user.u}</td><td>${user.bal.toLocaleString()}đ</td><td>${user.ref}</td></tr>`;
+            });
+            html += `</table>`;
+            document.getElementById('user-list').innerHTML = html;
+        }
+
+        function adminAddMoney(){
+            const targetU = document.getElementById('adm-target').value.trim().toUpperCase();
+            const amount = parseInt(document.getElementById('adm-cash').value);
+            if(!targetU || isNaN(amount)) return alert("Nhập đủ thông tin!");
+
+            let db = getDB();
+            const idx = db.users.findIndex(x => x.u === targetU);
+            if(idx === -1) return alert("Không tìm thấy User này!");
+
+            db.users[idx].bal += amount;
+            setDB(db);
+            alert(`Đã cộng ${amount.toLocaleString()}đ cho ${targetU}`);
+            renderAdminUsers(); // Cập nhật lại danh sách
+        }
+
+        // TIỆN ÍCH MUA KEY & NẠP (Rút gọn)
+        function buy(p, d){
+            let db = getDB(); const i = db.users.findIndex(x=>x.u===cur.u);
+            if(db.users[i].bal < p) return alert("Bạn không đủ tiền!");
+            db.users[i].bal -= p;
+            const k = "KEY-" + Math.random().toString(36).substring(7).toUpperCase();
+            db.keys.push({ key: k, days: d, used: false });
+            cur = db.users[i]; setDB(db); showDash();
+            prompt("KEY CỦA BẠN:", k);
+        }
+
+        function showNap(){
             document.getElementById('dash-box').classList.add('hidden');
             document.getElementById('nap-box').classList.remove('hidden');
-            document.getElementById('b-s').innerText = CFG.BANK_STK;
             document.getElementById('b-c').innerText = cur.ref;
             document.getElementById('q-img').src = `https://img.vietqr.io/image/${CFG.BANK_ID}-${CFG.BANK_STK}-compact.png?addInfo=${cur.ref}`;
         }
-        function closeNap() { document.getElementById('nap-box').classList.add('hidden'); document.getElementById('dash-box').classList.remove('hidden'); }
-
-        async function req() {
-            const v = document.getElementById('a-in').value;
-            if(!v || v < 10000) return alert("Tối thiểu nạp 10,000đ");
-            const btn = document.getElementById('rq-btn'); btn.disabled = true;
-            const approveUrl = window.location.href.split('?')[0] + `?task=deposit&target=${cur.u}&cash=${v}`;
-            const msg = `🔔 **YÊU CẦU NẠP V12.1**\n👤 User: \`${cur.u}\`\n💰 Tiền: \`${parseInt(v).toLocaleString()}đ\`\n🆔 Nội dung: \`${cur.ref}\``;
-            
-            await fetch(`https://api.telegram.org/bot${CFG.BOT_TOKEN}/sendMessage`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ chat_id: CFG.ADMIN_ID, text: msg, parse_mode: "Markdown",
-                    reply_markup: { inline_keyboard: [[{ text: `✅ DUYỆT ${parseInt(v).toLocaleString()}đ`, url: approveUrl }]] }
-                })
-            });
-            alert("Đã gửi yêu cầu! Hệ thống sẽ duyệt sau vài phút."); closeNap();
-        }
-
-        function buy(p, d) {
-            let db = getDB(); const i = db.users.findIndex(x => x.u === cur.u);
-            if(db.users[i].bal < p) return alert("Số dư không đủ!");
-            db.users[i].bal -= p;
-            const k = "ALEX-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-            db.keys.push({ key: k, days: d, used: false });
-            cur = db.users[i]; setDB(db); showDash(); 
-            prompt("KEY CỦA BẠN (HÃY COPY):", k);
-        }
-
-        function act() {
-            const k = document.getElementById('k-in').value.trim().toUpperCase();
-            let db = getDB(); const kI = db.keys.findIndex(x => x.key === k && !x.used);
-            if(kI === -1) return alert("Key không chính xác!");
-            const uI = db.users.findIndex(x => x.u === cur.u);
-            db.users[uI].exp = Date.now() + (db.keys[kI].days * 86400000);
-            db.keys[kI].used = true; cur = db.users[uI]; setDB(db);
-            alert("Kích hoạt thành công!"); showTool();
-        }
-
-        function showTool() {
-            document.getElementById('dash-box').classList.add('hidden');
-            document.getElementById('tool-box').classList.remove('hidden');
-            document.getElementById('hsd-tool').innerText = "HSD: " + new Date(cur.exp).toLocaleDateString();
-        }
-
-        function hybridAnalyze() {
-            const val = document.getElementById('md-in').value;
-            if(!val || val.length < 5) return alert("Mã phiên không hợp lệ!");
-            document.getElementById('an-btn').disabled = true;
-            document.getElementById('loading-node').classList.remove('hidden');
-            document.getElementById('res-box').classList.add('hidden');
-            let p = 0;
-            const iv = setInterval(() => {
-                p += 4; document.getElementById('vn-bar').style.width = p + "%";
-                if(p >= 100) { clearInterval(iv); finish(); }
-            }, 60);
-        }
-
-        function finish() {
-            const isTai = Math.random() > 0.5;
-            document.getElementById('loading-node').classList.add('hidden');
-            document.getElementById('res-box').classList.remove('hidden');
-            const f = document.getElementById('final');
-            f.innerText = isTai ? "TÀI" : "XỈU";
-            f.className = isTai ? "tai-text" : "xiu-text";
-            document.getElementById('acc').innerText = "Độ chính xác: " + (92 + Math.random()*7).toFixed(1) + "%";
-            document.getElementById('an-btn').disabled = false;
-        }
-
-        function admIn() {
-            if(prompt("NHẬP MẬT KHẨU ADMIN:") === CFG.ADMIN_PASS) {
-                let db = getDB();
-                alert(`QUẢN TRỊ VIÊN:\n- Tổng User: ${db.users.length}\n- Tài khoản: ${cur ? cur.u : 'N/A'}`);
-            }
-        }
-
-        // XỬ LÝ DUYỆT TỪ TELEGRAM
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('task') === 'deposit') {
-            if (prompt("XÁC NHẬN MẬT KHẨU ADMIN:") === CFG.ADMIN_PASS) {
-                let db = getDB(); const target = params.get('target'); const cash = parseInt(params.get('cash'));
-                const i = db.users.findIndex(x => x.u === target);
-                if (i !== -1) { 
-                    db.users[i].bal += cash; setDB(db); 
-                    alert("ĐÃ DUYỆT THÀNH CÔNG!"); 
-                    window.location.href = window.location.pathname; 
-                }
-            }
-        }
+        function closeNap(){ document.getElementById('nap-box').classList.add('hidden'); document.getElementById('dash-box').classList.remove('hidden'); }
     </script>
 </body>
 </html>
