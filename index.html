@@ -3,185 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ALEX MD5 ULTRA v18.5</title>
+    <title>TOOL TÀI XĨU VIP</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
         
-        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; }
         body { 
             background: #000; 
             color: #fff; 
-            font-family: 'JetBrains Mono', monospace; 
-            margin: 0; 
+            font-family: 'Orbitron', sans-serif; 
             height: 100vh; 
             display: flex; 
             align-items: center; 
-            justify-content: center;
+            justify-content: center; 
+            overflow: hidden;
+            user-select: none;
         }
-        .glass-card { 
-            background: rgba(15, 23, 42, 0.95); 
-            border: 1px solid rgba(34, 211, 238, 0.3); 
-            border-radius: 24px; 
-            width: 100%;
-            max-width: 380px;
-            padding: 2rem;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-        }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .tai-neon { color: #00f2ff; text-shadow: 0 0 15px #00f2ff; }
-        .xiu-neon { color: #ff0055; text-shadow: 0 0 15px #ff0055; }
-        
-        input, textarea { 
-            background: #0a0f1e !important; 
-            border: 1px solid #1e293b !important; 
-            color: #22d3ee !important; 
-            outline: none !important;
-            user-select: text !important;
-        }
-        input:focus { border-color: #06b6d4 !important; }
 
-        /* Hiệu ứng khi nhấn nút */
-        .btn-active:active { transform: scale(0.96); opacity: 0.9; }
+        .glass-card { 
+            background: rgba(10, 15, 30, 0.98); 
+            border: 1px solid rgba(34, 211, 238, 0.2); 
+            border-radius: 30px; 
+            width: 90%; 
+            max-width: 400px; 
+            padding: 2.5rem;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.1);
+        }
+
+        .tai-neon { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
+        .xiu-neon { color: #ff0055; text-shadow: 0 0 20px #ff0055; }
         .hidden { display: none !important; }
+
+        input, textarea {
+            background: #050a15 !important;
+            border: 1px solid #1e293b !important;
+            color: #22d3ee !important;
+            outline: none !important;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: #22d3ee !important; box-shadow: 0 0 10px rgba(34, 211, 238, 0.3); }
+
+        .btn-glow {
+            background: linear-gradient(90deg, #0891b2, #1e40af);
+            box-shadow: 0 0 15px rgba(8, 145, 178, 0.4);
+        }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div class="glass-card">
-        <div id="login-ui" class="space-y-6">
+        <div id="login-ui" class="space-y-8">
             <div class="text-center">
-                <h1 class="orbitron text-2xl font-black italic text-cyan-500">ALEX SYSTEM</h1>
-                <div class="h-1 w-20 bg-cyan-500 mx-auto mt-2 rounded-full"></div>
-            </div>
-            
-            <div class="space-y-2">
-                <p class="text-[10px] orbitron text-slate-400 text-center uppercase tracking-widest">Nhập mã kích hoạt hệ thống</p>
-                <input id="key-input" type="text" placeholder="KEY-XXXX-XXXX" 
-                    class="w-full p-4 rounded-xl text-center font-bold text-sm tracking-widest uppercase transition-all">
+                <h1 class="text-3xl font-black italic tracking-tighter text-cyan-500">ALEX SYSTEM</h1>
+                <p class="text-[10px] text-slate-500 mt-2">SECURE ACCESS v2.0</p>
             </div>
 
-            <button onclick="validateKey()" class="w-full py-4 rounded-xl bg-cyan-600 font-bold orbitron text-sm btn-active shadow-[0_0_20px_rgba(8,145,178,0.3)]">
-                KÍCH HOẠT NGAY
-            </button>
+            <div class="space-y-4">
+                <input id="key-input" type="text" placeholder="ENTER ACCESS KEY" 
+                    class="w-full p-4 rounded-2xl text-center font-bold uppercase tracking-widest">
+                
+                <button onclick="validateKey()" id="btn-login" 
+                    class="w-full py-4 rounded-2xl btn-glow font-bold active:scale-95 transition-all">
+                    KÍCH HOẠT HỆ THỐNG
+                </button>
+            </div>
             
-            <div class="text-center text-[9px] text-slate-600">
-                DEVICE ID: <span id="dev-id" class="text-slate-400">LOADING...</span>
+            <div class="text-center text-[8px] text-slate-700">
+                HWID: <span id="dev-id">FETCHING...</span>
             </div>
         </div>
 
-        <div id="tool-ui" class="hidden space-y-5">
-            <div class="flex justify-between items-center text-[10px] orbitron border-b border-cyan-900 pb-3">
-                <span class="text-green-500 font-bold">● SYSTEM LIVE</span>
+        <div id="tool-ui" class="hidden space-y-6">
+            <div class="flex justify-between items-center text-[9px] border-b border-cyan-900/50 pb-2">
+                <span class="text-green-500 animate-pulse font-bold">● VPS SERVER CONNECTED</span>
                 <span id="clock" class="text-slate-500">00:00:00</span>
             </div>
 
-            <div class="relative">
-                <textarea id="md5-input" placeholder="DÁN MÃ MD5 PHIÊN..." 
-                    class="w-full p-4 h-24 rounded-xl text-[11px] uppercase resize-none"></textarea>
-                <button onclick="resetData()" class="absolute top-2 right-2 p-1 bg-slate-800 rounded-md text-[10px] hover:bg-red-900 transition-colors">✕</button>
+            <div class="space-y-4">
+                <textarea id="md5-input" placeholder="PASTE MD5 HASH HERE..." 
+                    class="w-full p-4 h-28 rounded-2xl text-[11px] uppercase resize-none leading-relaxed"></textarea>
+                
+                <button onclick="analyzeMD5()" id="btn-ana" 
+                    class="w-full py-5 rounded-2xl btn-glow font-bold italic tracking-wider active:scale-95">
+                    PHÂN TÍCH DỮ LIỆU
+                </button>
             </div>
-            
-            <button onclick="analyzeMD5()" id="btn-ana" class="w-full py-5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-700 font-bold orbitron italic text-sm btn-active shadow-lg">
-                PHÂN TÍCH DỮ LIỆU
-            </button>
 
-            <div id="result-box" class="hidden">
-                <div class="bg-black/40 rounded-2xl p-6 border border-cyan-500/20 text-center">
-                    <p class="text-[8px] orbitron text-slate-500 mb-1 uppercase">Dự đoán AI chính xác</p>
-                    <h2 id="final-res" class="text-6xl font-black orbitron italic">...</h2>
-                    <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px]">
-                        <span class="text-slate-500 uppercase">Confidence</span>
-                        <span id="conf-val" class="text-cyan-400 font-bold">0%</span>
-                    </div>
-                </div>
+            <div id="result-box" class="hidden bg-black/60 rounded-3xl p-8 text-center border border-cyan-500/10 shadow-inner">
+                <p class="text-[8px] text-slate-500 mb-4 tracking-[0.5em]">PREDICTION RESULT</p>
+                <h2 id="final-res" class="text-7xl font-black italic">...</h2>
             </div>
         </div>
     </div>
 
     <script>
-        // Khởi tạo Telegram WebApp
+        // ================= CẤU HÌNH BẢO MẬT (PHẢI TRÙNG VỚI VPS) =================
+        const API_SERVER = "http://160.187.246.184:3000"; // Thay IP VPS của bạn vào đây
+        const API_SECRET = "ALEX_SECRET_999";           // Khớp với Secret trong server.js
+        // =========================================================================
+
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Hiển thị Device ID từ Telegram
-        const userId = tg.initDataUnsafe.user?.id || "WEB-USER";
+        // Lấy ID người dùng làm Device ID
+        const userId = tg.initDataUnsafe.user?.id || "GUEST_USER";
         document.getElementById('dev-id').innerText = userId;
 
-        // KIỂM TRA TRẠNG THÁI ĐÃ ĐĂNG NHẬP
-        window.onload = () => {
-            if(localStorage.getItem('is_auth') === 'true') {
-                switchToTool();
-            }
-        };
+        // 1. HÀM XÁC THỰC KEY QUA VPS
+        async function validateKey() {
+            const key = document.getElementById('key-input').value.trim().toUpperCase();
+            if(!key) return tg.showAlert("Vui lòng nhập Key!");
 
-        // HÀM XÁC THỰC KEY (CHÍNH)
-        function validateKey() {
-            const keyField = document.getElementById('key-input');
-            const key = keyField.value.trim().toUpperCase();
-
-            // QUY TẮC KEY: Bạn có thể đổi logic check ở đây
-            // Hiện tại mặc định Key bắt đầu bằng "KEY-" hoặc chữ "ADMIN"
-            if (key === "ADMIN" || key.startsWith("KEY-") || key.length > 8) {
-                localStorage.setItem('is_auth', 'true');
-                tg.HapticFeedback.notificationOccurred('success');
-                switchToTool();
-            } else {
-                tg.showAlert("Mã kích hoạt không đúng hoặc đã bị khóa!");
-                tg.HapticFeedback.notificationOccurred('error');
-            }
-        }
-
-        function switchToTool() {
-            document.getElementById('login-ui').classList.add('hidden');
-            document.getElementById('tool-ui').classList.remove('hidden');
-        }
-
-        // THUẬT TOÁN PHÂN TÍCH (CHÍNH XÁC)
-        function analyzeMD5() {
-            const raw = document.getElementById('md5-input').value.trim().toLowerCase();
-            if (raw.length < 10) return tg.showAlert("Vui lòng dán mã MD5 hợp lệ!");
-
-            const btn = document.getElementById('btn-ana');
-            btn.innerText = "ĐANG GIẢI MÃ...";
+            const btn = document.getElementById('btn-login');
+            btn.innerText = "AUTHENTICATING...";
             btn.disabled = true;
 
-            // Thuật toán băm trọng số ASCII tĩnh (Consistent Result)
-            let hashVal = 0;
-            for (let i = 0; i < raw.length; i++) {
-                hashVal += raw.charCodeAt(i) * (i + 1);
+            try {
+                const res = await fetch(`${API_SERVER}/api/verify`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        key: key, 
+                        deviceId: userId.toString(),
+                        secret: API_SECRET 
+                    })
+                });
+                
+                const data = await res.json();
+
+                if(data.success) {
+                    document.getElementById('login-ui').classList.add('hidden');
+                    document.getElementById('tool-ui').classList.remove('hidden');
+                    tg.HapticFeedback.notificationOccurred('success');
+                } else {
+                    tg.showAlert(data.msg);
+                    tg.HapticFeedback.notificationOccurred('error');
+                }
+            } catch (e) {
+                tg.showAlert("LỖI: Không thể kết nối tới Server VPS!\nHãy kiểm tra IP và Port 3000.");
+            } finally {
+                btn.innerText = "KÍCH HOẠT HỆ THỐNG";
+                btn.disabled = false;
             }
+        }
+
+        // 2. THUẬT TOÁN PHÂN TÍCH MD5
+        function analyzeMD5() {
+            const raw = document.getElementById('md5-input').value.trim();
+            if (raw.length < 10) return tg.showAlert("Mã MD5 không hợp lệ!");
+
+            const btn = document.getElementById('btn-ana');
+            btn.innerText = "DECRYPTING...";
+            btn.disabled = true;
 
             setTimeout(() => {
-                const isTai = hashVal % 2 === 0;
-                const box = document.getElementById('result-box');
-                const res = document.getElementById('final-res');
-                const conf = document.getElementById('conf-val');
-
-                box.classList.remove('hidden');
-                res.innerText = isTai ? "TÀI" : "XỈU";
-                res.className = `text-6xl font-black orbitron italic ${isTai ? 'tai-neon' : 'xiu-neon'}`;
+                // Thuật toán băm chuỗi dựa trên mã ASCII
+                let hashSum = 0;
+                for (let i = 0; i < raw.length; i++) {
+                    hashSum += raw.charCodeAt(i) * (i + 1);
+                }
                 
-                // Độ tin cậy giả lập từ thuật toán 94-99%
-                const score = 94 + (hashVal % 5.8);
-                conf.innerText = score.toFixed(2) + "%";
+                const isTai = hashSum % 2 === 0;
+                const resultBox = document.getElementById('result-box');
+                const resText = document.getElementById('final-res');
 
+                resultBox.classList.remove('hidden');
+                resText.innerText = isTai ? "TÀI" : "XỈU";
+                resText.className = `text-7xl font-black italic ${isTai ? 'tai-neon' : 'xiu-neon'}`;
+                
                 btn.innerText = "PHÂN TÍCH DỮ LIỆU";
                 btn.disabled = false;
                 tg.HapticFeedback.impactOccurred('heavy');
-            }, 1000);
+            }, 1500);
         }
 
-        function resetData() {
-            document.getElementById('md5-input').value = "";
-            document.getElementById('result-box').classList.add('hidden');
-        }
-
-        // Đồng hồ
+        // Cập nhật đồng hồ
         setInterval(() => {
             document.getElementById('clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
+
+        // 3. CHẶN PHÍM F12 VÀ KIỂM TRA PHẦN TỬ (CHỐNG CRACK)
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+                (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+                return false;
+            }
+        };
     </script>
 </body>
 </html>
