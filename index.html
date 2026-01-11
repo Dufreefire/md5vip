@@ -3,177 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ALEX GLOBAL TOOL v3.0</title>
+    <title>ALEX GLOBAL NO-API</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        
-        body { 
-            background: #020617; 
-            color: #fff; 
-            font-family: 'Orbitron', sans-serif; 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden;
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
-        }
-
-        .neon-box {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 2rem;
-        }
-
-        .input-style {
-            background: rgba(0, 0, 0, 0.5) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: #22d3ee !important;
-            transition: 0.3s;
-        }
-
-        .input-style:focus {
-            border-color: #06b6d4 !important;
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #0891b2 0%, #1d4ed8 100%);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
+        body { background: #020617; color: #fff; font-family: 'Orbitron', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .neon-box { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 2rem; }
+        .input-style { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid #1e293b !important; color: #22d3ee !important; }
         .hidden { display: none !important; }
         .result-tai { color: #00f2ff; text-shadow: 0 0 20px #00f2ff; }
         .result-xiu { color: #ff0055; text-shadow: 0 0 20px #ff0055; }
-
-        /* Chống bôi đen text */
-        * { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-        input, textarea { -webkit-user-select: text; user-select: text; }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-    <div class="neon-box w-full max-w-[400px] p-8 m-4">
-        
+    <div class="neon-box w-full max-w-[400px] p-8">
         <div id="auth-section" class="space-y-6">
-            <div class="text-center">
-                <h1 class="text-3xl font-black italic text-cyan-500 tracking-tighter">ALEX GLOBAL</h1>
-                <p class="text-[10px] text-slate-500 tracking-[0.3em]">SECURE SYSTEM V3</p>
-            </div>
-
+            <h1 class="text-3xl font-black text-center text-cyan-500 italic">ALEX OFFLINE</h1>
             <div class="space-y-3">
-                <input id="user-field" type="text" placeholder="Tên đăng nhập" class="w-full p-4 rounded-xl input-style text-sm font-bold">
-                <input id="pass-field" type="password" placeholder="Mật khẩu" class="w-full p-4 rounded-xl input-style text-sm font-bold">
-                <input id="key-field" type="text" placeholder="Nhập Key (Nếu có)" class="w-full p-4 rounded-xl input-style text-xs font-bold uppercase">
+                <input id="user-field" type="text" placeholder="Tên đăng nhập" class="w-full p-4 rounded-xl input-style text-sm">
+                <input id="pass-field" type="password" placeholder="Mật khẩu" class="w-full p-4 rounded-xl input-style text-sm">
             </div>
-
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="auth('login')" class="py-4 btn-primary rounded-xl font-bold text-sm active:scale-95 transition-all">ĐĂNG NHẬP</button>
-                <button onclick="auth('register')" class="py-4 bg-slate-800 rounded-xl font-bold text-sm border border-slate-700 active:scale-95">ĐĂNG KÝ</button>
+                <button onclick="handleAuth('login')" class="py-4 bg-cyan-600 rounded-xl font-bold text-sm">ĐĂNG NHẬP</button>
+                <button onclick="handleAuth('register')" class="py-4 bg-slate-800 rounded-xl font-bold text-sm border border-slate-700">ĐĂNG KÝ</button>
             </div>
-            
-            <p id="auth-msg" class="text-center text-[10px] text-pink-500 h-2"></p>
+            <p id="msg" class="text-center text-[10px] text-pink-500"></p>
         </div>
 
         <div id="tool-section" class="hidden space-y-6">
-            <div class="flex justify-between items-center border-b border-cyan-900/50 pb-3">
-                <div class="text-[9px]">
-                    <p class="text-green-400 font-bold">● VERCEL SERVER CONNECTED</p>
-                    <p id="user-info" class="text-slate-500 uppercase mt-1">USER: GUEST</p>
-                </div>
-                <span id="clock" class="text-[10px] text-slate-400 font-mono">00:00:00</span>
+            <div class="flex justify-between items-center border-b border-cyan-900 pb-2">
+                <span class="text-green-400 text-[10px] font-bold">● LOCAL STORAGE MODE</span>
+                <span id="user-info" class="text-[10px] text-slate-400"></span>
             </div>
-
-            <div class="space-y-4">
-                <textarea id="md5-input" placeholder="DÁN MÃ MD5 PHIÊN..." class="w-full p-4 h-32 rounded-2xl input-style text-xs leading-relaxed uppercase resize-none"></textarea>
-                
-                <button onclick="processData()" id="btn-ana" class="w-full py-5 btn-primary rounded-2xl font-black italic tracking-widest active:scale-95">
-                    PHÂN TÍCH GLOBAL
-                </button>
-            </div>
-
-            <div id="result-display" class="hidden bg-black/40 rounded-3xl p-6 text-center border border-white/5 animate-fade-in">
-                <p class="text-[8px] text-slate-500 mb-2 tracking-[0.5em]">KẾT QUẢ DỰ ĐOÁN</p>
+            <textarea id="md5-input" placeholder="DÁN MD5 PHIÊN..." class="w-full p-4 h-32 rounded-2xl input-style text-xs uppercase resize-none outline-none"></textarea>
+            <button onclick="runTool()" id="btn-ana" class="w-full py-5 bg-gradient-to-r from-cyan-600 to-blue-700 rounded-2xl font-black italic">PHÂN TÍCH GLOBAL</button>
+            <div id="result-display" class="hidden text-center p-6 bg-black/40 rounded-3xl border border-white/5">
                 <h2 id="final-res" class="text-7xl font-black italic">...</h2>
             </div>
         </div>
     </div>
 
     <script>
-        // CẤU HÌNH LIÊN KẾT VERCEL
-        const API_URL = window.location.origin + "/api/verify"; 
-        const API_SECRET = "ALEX_SECRET_999"; // Phải khớp với Backend
+        // GIẢ LẬP DATABASE JSON TRONG TRÌNH DUYỆT
+        const DB_KEY = "ALEX_USER_DATA";
 
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        const deviceId = tg.initDataUnsafe.user?.id || "BROWSER_GUEST";
+        function getDB() {
+            const data = localStorage.getItem(DB_KEY);
+            return data ? JSON.parse(data) : [];
+        }
 
-        // 1. HÀM ĐĂNG NHẬP / ĐĂNG KÝ
-        async function auth(mode) {
-            const user = document.getElementById('user-field').value;
-            const pass = document.getElementById('pass-field').value;
-            const key = document.getElementById('key-field').value;
-            const msg = document.getElementById('auth-msg');
+        function saveDB(db) {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+        }
 
-            if(!user || !pass) return tg.showAlert("Vui lòng nhập đủ thông tin!");
+        // XỬ LÝ ĐĂNG KÝ / ĐĂNG NHẬP (KHÔNG CẦN API)
+        function handleAuth(mode) {
+            const user = document.getElementById('user-field').value.trim();
+            const pass = document.getElementById('pass-field').value.trim();
+            const msg = document.getElementById('msg');
+            let db = getDB();
 
-            msg.innerText = "ĐANG XỬ LÝ...";
-            
-            try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        type: mode, user, pass, key, 
-                        deviceId: deviceId.toString(),
-                        secret: API_SECRET 
-                    })
-                });
-                const data = await res.json();
+            if (!user || !pass) return alert("Nhập đủ tài khoản/mật khẩu!");
 
-                if(data.success) {
-                    document.getElementById('auth-section').classList.add('hidden');
-                    document.getElementById('tool-section').classList.remove('hidden');
-                    document.getElementById('user-info').innerText = "USER: " + user;
-                    tg.HapticFeedback.notificationOccurred('success');
+            if (mode === 'register') {
+                const exist = db.find(u => u.username === user);
+                if (exist) return msg.innerText = "Tài khoản đã tồn tại!";
+                
+                db.push({ username: user, password: pass });
+                saveDB(db);
+                msg.innerText = "Đăng ký thành công! Hãy Đăng nhập.";
+                msg.className = "text-center text-[10px] text-green-400";
+            } else {
+                const valid = db.find(u => u.username === user && u.password === pass);
+                if (valid) {
+                    showTool(user);
                 } else {
-                    msg.innerText = data.msg;
+                    msg.innerText = "Sai tài khoản hoặc mật khẩu!";
                 }
-            } catch (e) {
-                // Giả lập để bạn test khi chưa deploy Vercel Backend
-                msg.innerText = "LỖI KẾT NỐI API!";
             }
         }
 
-        // 2. THUẬT TOÁN GỘP (VN + QUỐC TẾ)
-        function processData() {
+        function showTool(username) {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('tool-section').classList.remove('hidden');
+            document.getElementById('user-info').innerText = "USER: " + username.toUpperCase();
+        }
+
+        // THUẬT TOÁN GLOBAL (Gộp các tool)
+        function runTool() {
             const input = document.getElementById('md5-input').value.trim();
-            if(input.length < 5) return tg.showAlert("Dữ liệu quá ngắn!");
+            if (input.length < 5) return;
 
             const btn = document.getElementById('btn-ana');
-            btn.innerText = "ANALYZING...";
-            btn.disabled = true;
-
+            btn.innerText = "ĐANG TÍNH TOÁN...";
+            
             setTimeout(() => {
-                // Thuật toán Global Hybrid
-                let score = 0;
-                const clean = input.toLowerCase().replace(/[^a-f0-9]/g, '');
-                
-                // Logic tool quốc tế (Weighted Analysis)
-                for(let i=0; i < clean.length; i++) {
-                    score += parseInt(clean[i], 16) * (i % 2 === 0 ? 1 : 2);
+                // Thuật toán hỗn hợp: XOR + ASCII Weight + Length Check
+                let val = 0;
+                for(let i=0; i<input.length; i++) {
+                    val += input.charCodeAt(i) * (i + 1);
                 }
-                
-                // Logic tool VN (XOR Checksum)
-                let xor = 0;
-                for(let i=0; i < input.length; i++) xor ^= input.charCodeAt(i);
+                const isTai = (val + input.length) % 2 === 0;
 
-                const isTai = (score + xor) % 2 === 0;
-                
                 const resBox = document.getElementById('result-display');
                 const resText = document.getElementById('final-res');
                 
@@ -182,16 +115,9 @@
                 resText.className = "text-7xl font-black italic " + (isTai ? "result-tai" : "result-xiu");
                 
                 btn.innerText = "PHÂN TÍCH GLOBAL";
-                btn.disabled = false;
-                tg.HapticFeedback.impactOccurred('heavy');
-            }, 1500);
+                if(window.Telegram.WebApp) window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            }, 1000);
         }
-
-        // Đồng hồ & Chống F12
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-        document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && ['u','i','j'].includes(e.key.toLowerCase()))) e.preventDefault();
-        });
     </script>
 </body>
 </html>
